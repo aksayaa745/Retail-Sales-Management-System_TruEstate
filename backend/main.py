@@ -1,31 +1,27 @@
 ﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import router   # import your routes
+from routes import router
 
 app = FastAPI()
 
 # ============================
-# CORS CONFIGURATION
+# CORS FIX (must be BEFORE routes)
 # ============================
-origins = [
-    "https://retail-sales-management-system-tru-estate-7oaaksdkb.vercel.app"
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["https://retail-sales-management-system-tru-estate-7oaaksdkb.vercel.app"],
+    allow_credentials=True,
+    allow_methods=["*"],    # allow GET, POST, OPTIONS, etc.
+    allow_headers=["*"],    # allow all headers
 )
 
 # ============================
-# INCLUDE ROUTES
+# INCLUDE ROUTER
 # ============================
 app.include_router(router)
 
 # ============================
-# TEST ROUTE (OPTIONAL)
+# TEST ROUTE
 # ============================
 @app.get("/ping")
 async def ping():
