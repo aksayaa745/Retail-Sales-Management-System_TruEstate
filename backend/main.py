@@ -1,19 +1,21 @@
 ﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import register_routes
 
-app = FastAPI(title="TruEstate API")
+app = FastAPI()
+
+origins = [
+    "https://retail-sales-management-system-tru-estate-7oaaksdkb.vercel.app"
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://retail-sales-management-system-tru-eight.vercel.app"],
-    allow_credentials=True,
+    allow_origins=origins,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-register_routes(app)
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+# Your existing routes below
+@app.get("/api/sales")
+async def get_sales(page: int = 1, pageSize: int = 10):
+    return {"data": [], "page": page, "pageSize": pageSize, "total": 0, "totalPages": 0}
