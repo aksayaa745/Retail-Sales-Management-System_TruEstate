@@ -1,15 +1,15 @@
 ﻿import csv
 import os
 
-# Path to CSV
-DATA_FILE = os.path.join(os.path.dirname(__file__), "../data/sales.csv")
+# Correct path to your CSV file
+DATA_FILE = os.path.join(os.path.dirname(__file__), "../data/sales_data.csv")
 
-# Load CSV into memory
 sales_data = []
+
+# Load CSV (comma-separated)
 with open(DATA_FILE, "r", encoding="utf-8") as f:
-    reader = csv.DictReader(f)
+    reader = csv.DictReader(f)  # <-- CORRECT for your file
     for row in reader:
-        # Clean + normalize keys so frontend can use them directly
         cleaned = {
             "Date": row.get("Date", ""),
             "Customer ID": row.get("Customer ID", ""),
@@ -29,9 +29,7 @@ with open(DATA_FILE, "r", encoding="utf-8") as f:
 async def get_sales(page=1, pageSize=10, sortBy="customerName", sortOrder="asc"):
     rows = sales_data.copy()
 
-    # ----------------------------------------
-    # SORTING MAPPING
-    # ----------------------------------------
+    # Sorting rules
     sort_map = {
         "customerName": "Customer Name",
         "date": "Date",
@@ -41,26 +39,19 @@ async def get_sales(page=1, pageSize=10, sortBy="customerName", sortOrder="asc")
     }
 
     key = sort_map.get(sortBy)
-
     if key:
         reverse = sortOrder == "desc"
         rows.sort(key=lambda x: x.get(key, ""), reverse=reverse)
 
-    # ----------------------------------------
-    # PAGINATION
-    # ----------------------------------------
+    # Pagination
     total = len(rows)
     totalPages = (total + pageSize - 1) // pageSize
 
     start = (page - 1) * pageSize
     end = start + pageSize
-    page_rows = rows[start:end]
 
-    # ----------------------------------------
-    # RESPONSE FORMAT
-    # ----------------------------------------
     return {
-        "data": page_rows,
+        "data": rows[start:end],
         "page": page,
         "pageSize": pageSize,
         "total": total,
