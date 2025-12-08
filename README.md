@@ -8,7 +8,7 @@ This system demonstrates modular architecture, clarity in design, and production
 
 
 ## 2. Tech Stack
-- **Backend:** Node.js, Express, CSV Parser  
+- **Backend:** Python, FastAPI
 - **Frontend:** React (Vite), Vanilla CSS  
 - **Data Source:** CSV dataset (`sales_data.csv`)  
 - **Tools:** Nodemon, Vite  
